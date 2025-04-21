@@ -65,51 +65,51 @@ const NoteState = (props) => {
       return note._id !== id;
     });
     setNotes(newNotes);
-
-    // Edit a Note
-    const editNote = async (id, title, description, tag) => {
-      // API Call
-      const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdmNWZhNjQxZDQ1ZDNkZTNlMDEwNmYwIn0sImlhdCI6MTc0NDE5NDk0MX0.Onf7myLuMoPvzc6qCb73BPmLAoGfOmoGaBaktj8SFlE",
-        },
-        body: JSON.stringify({ title, description, tag }),
-      });
-      const json = response.json();
-
-      // Logic to edit in client
-      for (let index = 0; index < notes.length; index++) {
-        const element = notes[index];
-        if (element._id === id) {
-          element.title = title;
-          element.description = description;
-          element.tag = tag;
-        }
-      }
-      //API Call
-
-      // Logic to edit in client
-      for (let index = 0; index < notes.length; index++) {
-        const element = notes[index];
-        if (element._id === id) {
-          element.title = title;
-          element.description = description;
-          element.tag = tag;
-        }
-      }
-    };
-
-    return (
-      <NoteContext.Provider
-        value={{ notes, addNote, deleteNote, editNote, getNotes }}
-      >
-        {props.children}
-      </NoteContext.Provider>
-    );
   };
+
+  // Edit a Note
+  const editNote = async (id, title, description, tag) => {
+    // API Call
+    const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdmNWZhNjQxZDQ1ZDNkZTNlMDEwNmYwIn0sImlhdCI6MTc0NDE5NDk0MX0.Onf7myLuMoPvzc6qCb73BPmLAoGfOmoGaBaktj8SFlE",
+      },
+      body: JSON.stringify({ title, description, tag }),
+    });
+    const json = response.json();
+
+    // Logic to edit in client
+    for (let index = 0; index < notes.length; index++) {
+      const element = notes[index];
+      if (element._id === id) {
+        element.title = title;
+        element.description = description;
+        element.tag = tag;
+      }
+    }
+    //API Call
+
+    // Logic to edit in client
+    for (let index = 0; index < notes.length; index++) {
+      const element = notes[index];
+      if (element._id === id) {
+        element.title = title;
+        element.description = description;
+        element.tag = tag;
+      }
+    }
+  };
+
+  return (
+    <NoteContext.Provider
+      value={{ notes, addNote, deleteNote, editNote, getNotes }}
+    >
+      {props.children}
+    </NoteContext.Provider>
+  );
 };
 
 export default NoteState;
