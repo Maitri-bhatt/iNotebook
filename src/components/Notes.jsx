@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import NoteContext from "../context/notes/NoteContext";
 import NoteItem from "./NoteItem";
 import AddNote from "./AddNote";
@@ -11,19 +11,39 @@ const Notes = () => {
     getNotes();
     // eslint-disable-next-line
   }, []);
-  const updateNote = (note) => {
-    ref.current.click();
-  };
   const ref = useRef(null);
+  const [note, setNote] = useState({
+    etitle: "",
+    edescription: "",
+    etag: "",
+  });
+
+  const updateNote = (currentNote) => {
+    ref.current.click();
+    setNote({
+      etitle: currentNote.title,
+      edescription: currentNote.description,
+      etag: currentNote.tag,
+    });
+  };
+  const handleClick = (e) => {
+    console.log("Updating the note...", note);
+
+    e.preventDefault();
+  };
+  const onChange = (e) => {
+    setNote({ ...note, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       <AddNote />
       <button
-        type="button"
-        className="btn btn-primary"
-        data-toggle="modal"
-        data-target="#exampleModal"
         ref={ref}
+        type="button"
+        className="btn btn-primary d-none"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
       >
         Launch demo modal
       </button>
@@ -45,13 +65,55 @@ const Notes = () => {
               <button
                 type="button"
                 className="close"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">...</div>
+            <div className="modal-body">
+              <form className="my-3">
+                <div className="mb-3">
+                  <label htmlFor="title" className="form-label">
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="etitle"
+                    name="etitle"
+                    value={note.etitle}
+                    onChange={onChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="description" className="form-label">
+                    Description
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="edescription"
+                    name="edescription"
+                    value={note.edescription}
+                    onChange={onChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="tag" className="form-label">
+                    Tag
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="etag"
+                    name="etag"
+                    value={note.etag}
+                    onChange={onChange}
+                  />
+                </div>
+              </form>
+            </div>
             <div className="modal-footer">
               <button
                 type="button"
@@ -60,8 +122,12 @@ const Notes = () => {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
+              <button
+                onClick={handleClick}
+                type="button"
+                className="btn btn-primary"
+              >
+                Update Note
               </button>
             </div>
           </div>
