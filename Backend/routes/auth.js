@@ -21,6 +21,7 @@ router.post(
   async (req, res) => {
     let success = false;
 
+    console.log(req.body);
     // If there are errors, return Bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -55,6 +56,9 @@ router.post(
       success = true;
       res.json({ success, authtoken });
     } catch (error) {
+      return res
+        .status(400)
+        .json({ error: "Sorry a user with this email already exists" });
       console.error(error.message);
       res.status(500).send("Internal Server error");
     }

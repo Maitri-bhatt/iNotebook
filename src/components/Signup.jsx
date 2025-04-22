@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
-const Signup = () => {
+const Signup = (props) => {
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
     password: "",
     cpassword: "",
   });
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,11 +31,13 @@ const Signup = () => {
       // Save the auth token and redirect
       localStorage.setItem("token", json.authtoken);
       navigate("/");
+      props.showAlert("Accout Created Successfully ", "success");
     } else {
-      alert("Invalid credentials");
+      props.showAlert("Invalid credentials", "danger");
     }
   };
   const onChange = (e) => {
+    console.log(e.target.name, e.target.value);
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
@@ -47,9 +50,8 @@ const Signup = () => {
             className="form-control"
             id="name"
             name="name"
-            onChange={onchange}
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
+            onChange={onChange}
+            placeholder="Enter Name"
           />
         </div>
         <div className="form-group">
@@ -59,7 +61,7 @@ const Signup = () => {
             className="form-control"
             id="email"
             name="email"
-            onChange={onchange}
+            onChange={onChange}
             aria-describedby="emailHelp"
             placeholder="Enter email"
           />
@@ -75,7 +77,7 @@ const Signup = () => {
             className="form-control"
             id="password"
             name="password"
-            onChange={onchange}
+            onChange={onChange}
             minLength={5}
             placeholder="Password"
           />
@@ -87,7 +89,7 @@ const Signup = () => {
             className="form-control"
             id="cpassword"
             name="cpassword"
-            onChange={onchange}
+            onChange={onChange}
             minLength={5}
             placeholder="Password"
           />
